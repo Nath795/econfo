@@ -18,8 +18,10 @@ const isPhone = () => Math.min(innerWidth, innerHeight) <= 640;
 
 // How far back the camera must be for the whole globe to fit, even in a narrow portrait screen.
 function fitDistance(aspect) {
+  // A window with no size yet (a hidden tab, say) would put the camera infinitely far away.
+  const usableAspect = aspect > 0 && Number.isFinite(aspect) ? aspect : 1;
   const halfVertical = THREE.MathUtils.degToRad(FOV / 2);
-  const halfNarrowest = Math.min(halfVertical, Math.atan(Math.tan(halfVertical) * aspect));
+  const halfNarrowest = Math.min(halfVertical, Math.atan(Math.tan(halfVertical) * usableAspect));
   return Math.max(START_DISTANCE, (RADIUS * FIT_MARGIN) / Math.sin(halfNarrowest));
 }
 
@@ -232,7 +234,6 @@ export class Globe extends EventTarget {
 
     this.#bindEvents();
     this.#resize();
-    this.clock = new THREE.Clock();
     this.renderer.setAnimationLoop(() => this.#frame());
   }
 
@@ -382,6 +383,7 @@ export class Globe extends EventTarget {
     this.fit = fitDistance(w / h);
     this.controls.maxDistance = Math.max(5.2, this.fit * 1.3);
     this.renderer.setSize(w, h, false);
+    if (!(w > 0 && h > 0)) return; // Nothing to draw until the window has a size.
     this.camera.aspect = w / h;
     this.#applyViewOffset();
     this.camera.updateProjectionMatrix();

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="econfo">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>econfo</title>
+  <meta name="description" content="Live 3D globe of major economic news, country by country.">
+  <meta name="theme-color" content="#030810">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23071423' stroke='%2300b7ff' stroke-width='3'/%3E%3Ccircle cx='20' cy='12' r='4' fill='%232bd9c4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/manrope/index.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script type="importmap">
+    { "imports": {
+      "three": "./vendor/three/three.module.js",
+      "three/addons/": "./vendor/three/addons/"
+    } }
+  </script>
+</head>
+<body>
+  <canvas id="globe" aria-label="3D globe of the world. Use the search box to choose a country with the keyboard."></canvas>
+
+  <section id="toasts" aria-live="polite" aria-label="New economic news"></section>
+
+  <div id="topbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" data-i18n-placeholder="search" data-i18n-label="search" placeholder="Find a country or capital" autocomplete="off" spellcheck="false"
+             role="combobox" aria-expanded="false" aria-controls="search-results" aria-label="Find a country or capital">
+      <ul id="search-results" role="listbox" hidden></ul>
+    </div>
+    <label class="lang">
+      <span class="visually-hidden" data-i18n="language">Language</span>
+      <select id="lang"></select>
+    </label>
+    <div id="live" class="live is-connecting" role="status">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="live-text">Connecting</span>
+    </div>
+  </div>
+
+  <footer id="brandbar">
+    <h1 class="brand">econfo</h1>
+    <ul class="legend" aria-label="Economic impact colours, lowest to highest">
+      <li><span class="swatch l1"></span><span data-i18n="minor">Minor</span></li>
+      <li><span class="swatch l2"></span><span data-i18n="moderate">Moderate</span></li>
+      <li><span class="swatch l3"></span><span data-i18n="notable">Notable</span></li>
+      <li><span class="swatch l4"></span><span data-i18n="major">Major</span></li>
+      <li><span class="swatch l5"></span><span data-i18n="critical">Critical</span></li>
+    </ul>
+    <a class="credit" href="https://www.gdeltproject.org/" target="_blank" rel="noopener" data-i18n="sources">Sources: national media, GDELT Project</a>
+  </footer>
+
+  <div id="tooltip" hidden></div>
+
+  <aside id="panel" aria-label="Country news" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <header class="panel-head">
+      <div>
+        <h2 id="panel-country"></h2>
+        <p id="panel-capital"></p>
+      </div>
+      <button id="panel-close" type="button" aria-label="Close news panel" data-i18n-label="close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <p id="panel-summary"></p>
+    <ol id="panel-news"></ol>
+  </aside>
+
+  <div id="fatal" hidden>
+    <h2 data-i18n="fatalTitle">The globe couldn't start</h2>
+    <p id="fatal-text"></p>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "econfo",
+  "short_name": "econfo",
+  "description": "Live 3D globe of major economic news, country by country.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#030810",
+  "theme_color": "#030810",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
